@@ -13,5 +13,5 @@ yarn-error.log*
 *.njsproj
 *.sln
 
-# Ingonre mongodb data
-/db
+# API keys and secrets
+.env
