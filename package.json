@@ -19,6 +19,7 @@
     "build-ts": "tsc",
     "watch-ts": "tsc -w",
     "copy-static-assets": "ts-node copyStaticAssets.ts",
+    "watch-test": "npm run test -- --watchAll",
     "test": "jest --forceExit --coverage --verbose",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "connect-mongodb": "mongod --dbpath=./db --port 43996",
