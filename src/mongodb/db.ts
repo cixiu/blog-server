@@ -14,7 +14,7 @@ db.once('open', () => {
   logger.info('连接数据库成功' + MONGODB_URI);
 });
 
-db.on('error', error => {
+db.on('error', (error) => {
   logger.error('Error in MongoDb connection: ' + error);
   mongoose.disconnect();
 });

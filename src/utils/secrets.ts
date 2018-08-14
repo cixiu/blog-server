@@ -20,6 +20,7 @@ const prod = ENVIRONMENT === "production";
 export const PORT = process.env.PORT!;
 export const SESSION_SECRET = process.env.SESSION_SECRET!;
 export const MONGODB_URI = prod ? process.env.MONGODB_URI! : process.env.MONGODB_URI_LOCAL!;
+export const SUPER_SECRET = process.env.SUPER_SECRET!;
 
 if (!SESSION_SECRET) {
   logger.error('没有设置 session 秘钥, 请设置 SESSION_SECRET 变量');

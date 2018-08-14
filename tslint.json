@@ -2,5 +2,21 @@
   "extends": "tslint:recommended",
   "rules": {
     "quotemark": false,
+    "semicolon": [true, "always", "ignore-bound-class-methods"],
+    "object-literal-sort-keys": false,
+    "no-console": false,
+    "ordered-imports": false,
+    "no-angle-bracket-type-assertion": false,
+    "no-trailing-whitespace": false,
+    "whitespace": [
+      true,
+      "check-branch",
+      "check-decl",
+      "check-operator",
+      "check-module",
+      "check-separator",
+      "check-type"
+    ],
+    "variable-name": false
   }
 }
