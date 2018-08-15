@@ -10,7 +10,7 @@ export interface IAdminModel {
   avatar: string;
   create_time: string;
   create_address: string;
-  admin: string;
+  role: string;
 }
 
 export type AdminType = mongoose.Document & IAdminModel;
@@ -27,6 +27,6 @@ const adminSchema = new Schema({
 });
 
 adminSchema.index({ id: 1 });
-const AdminModel = mongoose.model('admin', adminSchema);
+const AdminModel = mongoose.model('Admin', adminSchema);
 
 export default AdminModel;

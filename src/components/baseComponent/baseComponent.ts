@@ -65,7 +65,7 @@ class BaseComponent {
    * @memberof BaseComponent
    */
   public uploadImg = async (ctx: Context) => {
-    // console.log(ctx.request.body.files)
+    // console.log(ctx.request.files);  // koa-body@2 与 @4有破坏性改变
     try {
       const image = await this.qiniu(ctx);
       ctx.body = {
@@ -91,13 +91,13 @@ class BaseComponent {
    */
   private qiniu = (ctx: Context): Promise<IQiuImageReturn> => {
     return new Promise(async (resolve, reject) => {
-      const { files } = ctx.request.body;
+      const { files } = ctx.request;
       const time = +new Date();
       // const img_id = await this.getId('img_id');
       const randomImgId = (time + Math.ceil(Math.random() * 10000)).toString(
         16,
       );
-      const file = files.image || files.file;
+      const file = files!.image || files!.file;
       const localFile = file.path;
       const key = `${dateFormat(time, 'yyyy/mm/dd')}/${time}/${randomImgId}`;
       // path.extname(localFile)

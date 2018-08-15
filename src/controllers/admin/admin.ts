@@ -2,7 +2,7 @@ import { Context } from 'koa';
 import * as md5 from 'md5';
 import * as dateFormat from 'dateformat';
 
-import AdminModel, { AdminType } from '../../models/admin/admin';
+import AdminModel, { AdminType } from '../../models/AdminModel/AdminModel';
 import AddressComponent, { IAddressInfo } from '../../components/addressComponent/addressComponent';
 import logger from '../../utils/logger';
 import { SUPER_SECRET } from '../../utils/secrets';
