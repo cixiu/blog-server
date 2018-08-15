@@ -1,4 +1,5 @@
 import { Context } from 'koa';
+import * as mongoose from 'mongoose';
 import * as md5 from 'md5';
 import * as dateFormat from 'dateformat';
 
@@ -19,7 +20,6 @@ class Admin extends AddressComponent {
    */
   public register = async (ctx: Context) => {
     const { user_name, password, super_secret } = ctx.request.body;
-
     try {
       if (!user_name) {
         throw new Error('用户名不能为空');
@@ -34,7 +34,6 @@ class Admin extends AddressComponent {
       };
       return;
     }
-
     try {
       const admin = <AdminType>await AdminModel.findOne({ user_name });
       if (admin) {
@@ -97,9 +96,7 @@ class Admin extends AddressComponent {
       };
       return;
     }
-
     const newPassword = this.md5(password);
-
     try {
       const admin = <AdminType>await AdminModel.findOne({ user_name });
       // 如果没有找到admin 则注册
@@ -138,6 +135,7 @@ class Admin extends AddressComponent {
         };
       }
     } catch (err) {
+      console.log(err);
       logger.error('注册管理员失败', err);
       ctx.body = {
         code: 1,
@@ -184,7 +182,6 @@ class Admin extends AddressComponent {
    */
   public getAdminInfo = async (ctx: Context) => {
     const { admin_id } = ctx.session!;
-
     if (!admin_id) {
       logger.debug('管理员的session失效或者未登录');
       ctx.body = {
@@ -193,7 +190,6 @@ class Admin extends AddressComponent {
       };
       return;
     }
-
     try {
       const info = <AdminType>await AdminModel.findOne(
         { id: admin_id },
@@ -223,7 +219,6 @@ class Admin extends AddressComponent {
    */
   public getAdminList = async (ctx: Context) => {
     const { limit = 10, offset = 0 } = ctx.query;
-
     try {
       const adminList = <AdminType[]>await AdminModel.find({}, '-_id -__v -password')
         .sort({ id: -1 })

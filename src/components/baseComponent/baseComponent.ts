@@ -4,7 +4,7 @@ import * as qiniu from 'qiniu';
 import * as dateFormat from 'dateformat';
 // import * as path from 'path';
 
-import Ids, { IIds, IdType } from '../../models/ids';
+import IdModel, { IId, IdType } from '../../models/id';
 import logger from '../../utils/logger';
 
 const baseUrl = 'https://blog.image.tzpcc.cn';
@@ -17,20 +17,21 @@ interface IQiuImageReturn {
 }
 
 class BaseComponent {
-  private idList: Array<keyof IIds>;
+  private idList: Array<keyof IId>;
 
   constructor() {
     this.idList = ['admin_id', 'user_id', 'article_id', 'img_id'];
   }
 
-  public getId = async (type: keyof IIds) => {
+  public getId = async (type: keyof IId) => {
+    console.log(type);
     if (this.idList.indexOf(type) === -1) {
       logger.error('id类型错误');
       throw new Error('id类型错误');
     }
 
     try {
-      const idData = <IdType>await Ids.findOne();
+      const idData = <IdType>await IdModel.findOne();
 
       if (!idData[type]) {
         idData[type] = 0;
