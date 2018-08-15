@@ -39,7 +39,6 @@ class AddressComponent extends BaseComponent {
         ip = '175.10.241.243';
       }
 
-      logger.info(ip);
       try {
         const result = await this.fetch('http://restapi.amap.com/v3/ip', {
           ip,

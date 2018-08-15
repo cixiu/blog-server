@@ -1,5 +1,4 @@
 import { Context } from 'koa';
-import * as mongoose from 'mongoose';
 import * as md5 from 'md5';
 import * as dateFormat from 'dateformat';
 
@@ -7,6 +6,9 @@ import AdminModel, { AdminType } from '../../models/admin/admin';
 import AddressComponent, { IAddressInfo } from '../../components/addressComponent/addressComponent';
 import logger from '../../utils/logger';
 import { SUPER_SECRET } from '../../utils/secrets';
+
+// 过滤数据库中的_id _v password 字段
+const filterField = '-_id -__v -password';
 
 class Admin extends AddressComponent {
   constructor() {
@@ -193,7 +195,7 @@ class Admin extends AddressComponent {
     try {
       const info = <AdminType>await AdminModel.findOne(
         { id: admin_id },
-        '-_id -__v -password',
+        filterField,
       );
       if (!info) {
         throw new Error('未找到管理员');
@@ -220,16 +222,17 @@ class Admin extends AddressComponent {
   public getAdminList = async (ctx: Context) => {
     const { limit = 10, offset = 0 } = ctx.query;
     try {
-      const adminList = <AdminType[]>await AdminModel.find({}, '-_id -__v -password')
+      const adminList = <AdminType[]>await AdminModel.find({}, filterField)
         .sort({ id: -1 })
         .skip(Number(offset))
         .limit(Number(limit));
+
       ctx.body = {
         code: 0,
         data: adminList,
       };
     } catch (err) {
-      logger.error('获取管理员列表失败', err);
+      logger.error('获取管理员列表失败', `${err}`);
       ctx.body = {
         code: 1,
         message: '获取管理员列表失败',
