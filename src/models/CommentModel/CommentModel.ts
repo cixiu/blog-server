@@ -52,7 +52,7 @@ interface IUserSchema {
   username: string;
   id: number;
   avatar: string;
-  createAt: string;
+  createAt: number;
   create_time: string;
   create_address: string;
 }
@@ -74,14 +74,18 @@ interface ISubCommentSchema {
   userInfo: object;
 }
 
+type SubCommentSchemaPartial = Partial<ISubCommentSchema>;
+
 interface ICommentSchema extends ISubCommentSchema {
-  subComments: ISubCommentSchema[];
+  subComments: SubCommentSchemaPartial[];
 }
+
+type CommentSchemaPartial = Partial<ICommentSchema>;
 
 export interface ICommentModel {
   count: number;
   articleId: number;
-  comments: ICommentSchema[];
+  comments: CommentSchemaPartial[];
 }
 
 export type CommentType = mongoose.Document & ICommentModel;

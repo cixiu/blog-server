@@ -111,7 +111,7 @@ class Admin extends AddressComponent {
         const newAdmin = {
           user_name,
           password: newPassword,
-          type: super_secret === 'superSecret' ? 0 : 1,
+          type: super_secret === SUPER_SECRET ? 0 : 1,
           id: admin_id,
           create_time: dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss'),
           create_address,
