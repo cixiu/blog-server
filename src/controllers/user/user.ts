@@ -2,7 +2,7 @@ import { Context } from 'koa';
 import * as md5 from 'md5';
 import * as dateFormat from 'dateformat';
 
-import UserModel, { UserType, IUserModel } from '../../models/UserModel/UserModel';
+import UserModel, { UserType } from '../../models/UserModel/UserModel';
 import AddressComponent, { IAddressInfo } from '../../components/addressComponent/addressComponent';
 
 class User extends AddressComponent {
