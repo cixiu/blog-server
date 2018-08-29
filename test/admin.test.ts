@@ -90,3 +90,17 @@ describe('GET /api/admin/logout', () => {
       });
   });
 });
+
+describe('GET /api/admin/upload', () => {
+  test('上传图片至七牛云', (done) => {
+    return agent
+      .post('/api/admin/upload')
+      .attach('image', 'public/images/avatar.jpeg')
+      .expect(200)
+      .end((err, resp) => {
+        expect(resp.error).not.toBeUndefined();
+        expect(resp.body.code).toBe(0);
+        done();
+      });
+  });
+});
