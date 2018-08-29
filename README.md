@@ -24,7 +24,7 @@ this is a personal blog api server written by node and typescript
   - [ ] 文章模块
   - [ ] 评论模块
 
-### 项目启动
+### 项目启动
 ```bash
 # first
 yarn connect-mongodb
@@ -44,6 +44,6 @@ yarn watch-test
 
 ### changelog
 * 2018-8-29
-    * 添加了admin, user, category 模块的测试
+    * 添加了admin, user, category 模块的测试
     * 将session 存入mongodb 中
 
