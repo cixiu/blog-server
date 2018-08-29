@@ -18,8 +18,11 @@ export const ENVIRONMENT = process.env.NODE_ENV!;
 const prod = ENVIRONMENT === "production";
 
 export const PORT = process.env.PORT!;
+export const PORT_TEST = process.env.PORT_TEST!;
 export const SESSION_SECRET = process.env.SESSION_SECRET!;
 export const MONGODB_URI = prod ? process.env.MONGODB_URI! : process.env.MONGODB_URI_LOCAL!;
+export const MONGODB_URI_TEST = prod ? process.env.MONGODB_URI_TEST! : process.env.MONGODB_URI_TEST!;
+export const COOKIE_KEY = process.env.COOKIE_KEY!;
 export const SUPER_SECRET = process.env.SUPER_SECRET!;
 
 if (!SESSION_SECRET) {

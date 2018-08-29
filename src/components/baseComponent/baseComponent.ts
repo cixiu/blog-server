@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Context } from 'koa';
 import * as qiniu from 'qiniu';
 import * as dateFormat from 'dateformat';
+import { SessionModel, SessionType } from '../../models/session';
 // import * as path from 'path';
 
 import IdModel, { IId, IdType } from '../../models/id';
@@ -83,6 +84,19 @@ class BaseComponent {
       };
     }
   };
+
+  /**
+   * 通过cookie_key 获取session_id
+   *
+   * @protected
+   * @memberof BaseComponent
+   */
+  protected getSessionId = async (ctx: Context, session_id: string) => {
+    const cookie_key = process.env.COOKIE_KEY!;
+    const id = ctx.cookies.get(cookie_key);
+    const session = <SessionType>await SessionModel.findOne({ id });
+    return session.data[session_id];
+  }
 
   /**
    * 七牛云文件(图片)上传

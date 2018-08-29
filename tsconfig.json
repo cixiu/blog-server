@@ -36,7 +36,7 @@
     "baseUrl": ".",
     "paths": {
       "*": ["node_modules/*", "typings/*"]
-    },
+    }
   },
   "include": ["src/**/*", "typings/**/*"],
   "exclude": ["node_modules", "dist"]

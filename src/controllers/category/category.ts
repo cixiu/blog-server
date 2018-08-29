@@ -1,12 +1,13 @@
 import { Context } from 'koa';
 import * as dateFormat from 'dateformat';
 
+import BaseComponent from '../../components/baseComponent/baseComponent';
 import AdminModel, { AdminType } from '../../models/AdminModel/AdminModel';
 import CategoryModel, {
   CategoryType,
 } from '../../models/CategoryModel/CategoryModel';
 
-class Category {
+class Category extends BaseComponent {
   /**
    * 新建标签分类
    *
@@ -15,7 +16,10 @@ class Category {
   public create = async (ctx: Context) => {
     const { title } = ctx.request.body;
     try {
-      const { admin_id } = ctx.session!;
+      let { admin_id } = ctx.session!;
+
+      admin_id = await this.getSessionId(ctx, 'admin_id');
+
       const admin = <AdminType>await AdminModel.findOne({ id: admin_id });
       if (!admin_id) {
         ctx.body = {
@@ -75,7 +79,10 @@ class Category {
   public delete = async (ctx: Context) => {
     const { title } = ctx.request.body;
     try {
-      const { admin_id } = ctx.session!;
+      let { admin_id } = ctx.session!;
+
+      admin_id = await this.getSessionId(ctx, 'admin_id');
+
       if (!admin_id) {
         throw new Error('请先登录');
       }

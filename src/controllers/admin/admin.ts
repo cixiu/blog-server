@@ -2,6 +2,7 @@ import { Context } from 'koa';
 import * as md5 from 'md5';
 import * as dateFormat from 'dateformat';
 
+// import { SessionModel, SessionType } from '../../models/session';
 import AdminModel, { AdminType } from '../../models/AdminModel/AdminModel';
 import AddressComponent, { IAddressInfo } from '../../components/addressComponent/addressComponent';
 import logger from '../../utils/logger';
@@ -87,7 +88,8 @@ class Admin extends AddressComponent {
     try {
       if (!user_name) {
         throw new Error('用户名不能为空');
-      } else if (!password) {
+      }
+      if (!password) {
         throw new Error('密码不能为空');
       }
     } catch (err) {
@@ -183,7 +185,17 @@ class Admin extends AddressComponent {
    * @memberof Admin
    */
   public getAdminInfo = async (ctx: Context) => {
-    const { admin_id } = ctx.session!;
+    let { admin_id } = ctx.session!;
+
+    admin_id = await this.getSessionId(ctx, 'admin_id');
+
+    // console.log(admin_id);
+    // console.log('ssssssss', ctx.cookies.get('gtx1080ti'));
+    // const id = ctx.cookies.get('gtx1080ti');
+    // const data = <SessionType>await SessionModel.findOne({ id });
+    // admin_id = data.data.admin_id;
+    // console.log('dsfsdhgs', data);
+    // console.log(ctx);
     if (!admin_id) {
       logger.debug('管理员的session失效或者未登录');
       ctx.body = {
