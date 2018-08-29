@@ -17,4 +17,33 @@ this is a personal blog api server written by node and typescript
   - [ ] 用户个人中心 - 暂不支持
   - [ ] 消息通知 - 暂不支持
 
-* 编写测试
+* 编写测试
+  - [x] 管理员模块
+  - [x] 用户模块
+  - [x] 文章分类标签模块
+  - [ ] 文章模块
+  - [ ] 评论模块
+
+### 项目启动
+```bash
+# first
+yarn connect-mongodb
+
+#second
+yarn watch
+```
+
+### 测试
+```bash
+# first
+yarn connect-mongodb-test
+
+#second
+yarn watch-test
+```
+
+### changelog
+* 2018-8-29
+    * 添加了admin, user, category 模块的测试
+    * 将session 存入mongodb 中
+
