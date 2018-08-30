@@ -2,7 +2,7 @@ import * as request from 'supertest';
 import app from '../src/app';
 import { SUPER_SECRET } from '../src/utils/secrets';
 
-const agent = request.agent(app.listen());
+const agent = request.agent(app.callback());
 
 describe('POST /api/admin/login', () => {
   test('超级管理员注册登录', (done) => {

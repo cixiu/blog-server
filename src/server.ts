@@ -1,8 +1,6 @@
 import app from './app';
-import { PORT, PORT_TEST } from './utils/secrets';
+import { PORT } from './utils/secrets';
 
-const port = process.env.NODE_ENV === 'test' ? PORT_TEST : PORT;
-
-app.listen(port, () => {
+export default app.listen(PORT, () => {
   console.log(`server running at http://localhost:${PORT}`);
 });

@@ -3,7 +3,7 @@ import admin from '../controllers/admin/admin';
 
 const adminRouter = new Router();
 
-adminRouter.post('/register', admin.register);
+// adminRouter.post('/register', admin.register);
 adminRouter.post('/login', admin.login);
 adminRouter.get('/logout', admin.logout);
 adminRouter.get('/info', admin.getAdminInfo);

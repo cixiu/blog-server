@@ -21,62 +21,62 @@ class Admin extends AddressComponent {
    *
    * @memberof Admin
    */
-  public register = async (ctx: Context) => {
-    const { user_name, password, super_secret } = ctx.request.body;
-    try {
-      if (!user_name) {
-        throw new Error('用户名不能为空');
-      } else if (!password) {
-        throw new Error('密码不能为空');
-      }
-    } catch (err) {
-      logger.error(err.message);
-      ctx.body = {
-        code: 1,
-        message: err.message,
-      };
-      return;
-    }
-    try {
-      const admin = <AdminType>await AdminModel.findOne({ user_name });
-      if (admin) {
-        console.log('用户名已存在');
-        ctx.body = {
-          code: 1,
-          message: '用户名已存在',
-        };
-      } else {
-        const roleType =
-          super_secret === SUPER_SECRET ? '超级管理员' : '管理员';
-        const admin_id = await this.getId('admin_id');
-        const addressInfo = <IAddressInfo>await this.guessPosition(ctx.req);
-        const create_address = `${addressInfo.province} ${addressInfo.city}`;
-        const newPassword = this.md5(password);
-        const newAdmin = {
-          user_name,
-          password: newPassword,
-          type: super_secret === SUPER_SECRET ? 0 : 1,
-          id: admin_id,
-          create_time: dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss'),
-          create_address,
-          role: roleType,
-        };
+  // public register = async (ctx: Context) => {
+  //   const { user_name, password, super_secret } = ctx.request.body;
+  //   try {
+  //     if (!user_name) {
+  //       throw new Error('用户名不能为空');
+  //     } else if (!password) {
+  //       throw new Error('密码不能为空');
+  //     }
+  //   } catch (err) {
+  //     logger.error(err.message);
+  //     ctx.body = {
+  //       code: 1,
+  //       message: err.message,
+  //     };
+  //     return;
+  //   }
+  //   try {
+  //     const admin = <AdminType>await AdminModel.findOne({ user_name });
+  //     if (admin) {
+  //       console.log('用户名已存在');
+  //       ctx.body = {
+  //         code: 1,
+  //         message: '用户名已存在',
+  //       };
+  //     } else {
+  //       const roleType =
+  //         super_secret === SUPER_SECRET ? '超级管理员' : '管理员';
+  //       const admin_id = await this.getId('admin_id');
+  //       const addressInfo = <IAddressInfo>await this.guessPosition(ctx.req);
+  //       const create_address = `${addressInfo.province} ${addressInfo.city}`;
+  //       const newPassword = this.md5(password);
+  //       const newAdmin = {
+  //         user_name,
+  //         password: newPassword,
+  //         type: super_secret === SUPER_SECRET ? 0 : 1,
+  //         id: admin_id,
+  //         create_time: dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss'),
+  //         create_address,
+  //         role: roleType,
+  //       };
 
-        await AdminModel.create(newAdmin);
-        ctx.session!.admin_id = admin_id;
-        ctx.body = {
-          code: 0,
-          message: '注册管理员成功',
-        };
-      }
-    } catch (err) {
-      console.log('注册管理员失败', err);
-      ctx.body = {
-        code: 1,
-        message: '注册管理员失败',
-      };
-    }
-  };
+  //       await AdminModel.create(newAdmin);
+  //       ctx.session!.admin_id = admin_id;
+  //       ctx.body = {
+  //         code: 0,
+  //         message: '注册管理员成功',
+  //       };
+  //     }
+  //   } catch (err) {
+  //     console.log('注册管理员失败', err);
+  //     ctx.body = {
+  //       code: 1,
+  //       message: '注册管理员失败',
+  //     };
+  //   }
+  // };
 
   /**
    * 管理员登录

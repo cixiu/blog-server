@@ -16,6 +16,9 @@ yarn-error.log*
 
 # API keys and secrets
 .env
+.env.test
+.env.dev
+.env.production
 
 # Ignore *.log
 *.log
