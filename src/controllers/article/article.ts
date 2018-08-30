@@ -49,7 +49,10 @@ class Article extends baseComponent {
     });
     const is_test = isTestArticle(newCategory);
     try {
-      const { admin_id } = ctx.session!;
+      let { admin_id } = ctx.session!;
+
+      admin_id = await this.getSessionId(ctx, 'admin_id');
+
       const admin = <AdminType>await AdminModel.findOne({ id: admin_id });
       // 只有超级管理员才能发布文章
       if (admin.type === 0) {
@@ -193,7 +196,10 @@ class Article extends baseComponent {
   public deleteArticle = async (ctx: Context) => {
     const { id } = ctx.query;
     try {
-      const { admin_id } = ctx.session!;
+      let { admin_id } = ctx.session!;
+
+      admin_id = await this.getSessionId(ctx, 'admin_id');
+
       const admin = <AdminType>await AdminModel.findOne({ id: admin_id });
       const article = <ArticleType>await ArticleModel.findOne({ id });
       if (!article.id) {
@@ -231,7 +237,7 @@ class Article extends baseComponent {
    * @memberof Article
    */
   public getArticleDetail = async (ctx: Context) => {
-    const { id, update } = ctx.query;
+    const { id, update = true } = ctx.query;
     try {
       const article = <ArticleType>await ArticleModel.findOne({ id }, '-_id -__v');
       if (!article) {
@@ -283,7 +289,9 @@ class Article extends baseComponent {
       if (!id) {
         throw new Error('请传入要更新的文章的id');
       }
-      const { admin_id } = ctx.session!;
+      let { admin_id } = ctx.session!;
+
+      admin_id = await this.getSessionId(ctx, 'admin_id');
       const admin = <AdminType>await AdminModel.findOne({ id: admin_id });
       if (admin.type === 0) {
         await ArticleModel.findOneAndUpdate({ id }, { $set: newData });
