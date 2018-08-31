@@ -1,10 +1,33 @@
 import * as request from 'supertest';
+import axios from 'axios';
 import app from '../src/app';
 import { SUPER_SECRET } from '../src/utils/secrets';
 
 const agent = request.agent(app.callback());
 
 let article_id!: number;
+let userId!: number;
+let commentId!: number;
+let respUserId!: number;
+
+beforeAll(async () => {
+  const resp = await agent
+    .post('/api/user/login')
+    .send({
+      username: '测试用户',
+      password: '123456',
+    });
+
+  const resp2 = await agent
+  .post('/api/user/login')
+  .send({
+    username: '测试用户',
+    password: '123456',
+  });
+
+  userId = resp.body.data.id;
+  respUserId = resp2.body.data.id;
+});
 
 // 创建文章
 describe('POST /api/article/create', () => {
@@ -118,10 +141,88 @@ describe('POST /api/article/update', () => {
   });
 });
 
+/*
+  评论相关的api
+*/
+// 新建评论
+describe('POST /api/comments/:articleId/create', () => {
+  test('给文章评论', (done) => {
+    return agent
+      .post(`/api/comments/${article_id}/create`)
+      .send({
+        userId,
+        content: '这是一条测试的评论',
+      })
+      .set('cookie', 'userId=gfjdlagjhlfdla')
+      .expect(200)
+      .end((err, resp) => {
+        expect(resp.error).not.toBeUndefined();
+        expect(resp.body.code).toBe(0);
+        commentId = resp.body.data.id;
+        done();
+      });
+  });
+});
+
+// 文章的评论列表
+describe('POST /api/comments/:articleId/list', () => {
+  test('文章的评论列表', (done) => {
+    return agent
+      .get(`/api/comments/${article_id}/list`)
+      .query({
+        userId,
+      })
+      .expect(200)
+      .end((err, resp) => {
+        expect(resp.error).not.toBeUndefined();
+        expect(resp.body.code).toBe(0);
+        done();
+      });
+  });
+});
+
+// 点赞评论
+describe('POST /api/comments/:articleId/like', () => {
+  test('点赞评论', (done) => {
+    return agent
+      .post(`/api/comments/${article_id}/like`)
+      .send({
+        userId,
+        commentId,
+      })
+      .set('cookie', 'userId=gfjdlagjhlfdla')
+      .expect(200)
+      .end((err, resp) => {
+        expect(resp.error).not.toBeUndefined();
+        expect(resp.body.code).toBe(0);
+        done();
+      });
+  });
+});
+
+// 回复评论
+describe('POST /api/comments/:articleId/:commentId/:userId/reply/:respUserId', () => {
+  test('回复评论', (done) => {
+    return agent
+      .post(`/api/comments/${article_id}/${commentId}/${userId}/reply/${respUserId}`)
+      .send({
+        content: '这是一条回复的测试',
+      })
+      .set('cookie', 'userId=gfjdlagjhlfdla')
+      .expect(200)
+      .end((err, resp) => {
+        expect(resp.error).not.toBeUndefined();
+        expect(resp.body.code).toBe(0);
+        done();
+      });
+  });
+});
+
+//
+//
 // 删除文章
 describe('GET /api/article/delete', () => {
   test('删除文章', (done) => {
-    console.log('sdfssssssssssssssssssssssssss', article_id);
     return agent
       .get('/api/article/delete')
       .query({

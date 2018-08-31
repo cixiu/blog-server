@@ -20,7 +20,9 @@ class AddressComponent extends BaseComponent {
     this.gaodekey = GAODE_KEY;
   }
   // 根据ip地址获取地址
-  public guessPosition = async (req: Context['req']): Promise<IAddressInfo | {}> => {
+  public guessPosition = async (
+    req: Context['req'],
+  ): Promise<IAddressInfo | {}> => {
     return new Promise(async (resolve, reject) => {
       // 请求头remote-ip在前端服务端渲染做用户登录的代理转发时进行了设置
       // 不然无法获得正确的ip地址
@@ -35,7 +37,10 @@ class AddressComponent extends BaseComponent {
         ip = ipArr[0];
       }
 
-      if (process.env.NODE_ENV === 'development') {
+      if (
+        process.env.NODE_ENV === 'development' ||
+        process.env.NODE_ENV === 'test'
+      ) {
         ip = '175.10.241.243';
       }
 

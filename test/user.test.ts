@@ -3,16 +3,21 @@ import app from '../src/app';
 
 const agent = request.agent(app.callback());
 
+let userId!: number;
+
 describe('POST /api/user/login', () => {
   test('用户注册登录', (done) => {
     return agent
       .post('/api/user/login')
-      .field('username', '测试用户')
-      .field('password', '123456 ')
+      .send({
+        username: '测试用户',
+        password: '123456',
+      })
       .expect(200)
       .end((err, resp) => {
         expect(resp.error).not.toBeUndefined();
         expect(resp.body.code).toBe(0);
+        userId = resp.body.data.id;
         done();
       });
   });
@@ -23,7 +28,7 @@ describe('GET /api/user/info', () => {
     return agent
       .get('/api/user/info')
       .query({
-        user_id: 1,
+        user_id: userId,
       })
       .expect(200)
       .end((err, resp) => {
