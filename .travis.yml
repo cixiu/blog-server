@@ -2,12 +2,14 @@ language: node_js
 sudo: false
 node_js:
   - "8"
+cache:
+    directories:
+      - node_modules
 services:
   - mongodb
 branches:
   only:
     - master
-before_script:
-  - npm run connect-mongodb-test
 script:
+  - npm run connect-mongodb-test
   - npm run test
