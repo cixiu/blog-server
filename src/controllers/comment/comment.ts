@@ -25,6 +25,8 @@ import baseComponent from '../../components/baseComponent/baseComponent';
 
 const filterField = '-__v -_id -password';
 
+type PromiseReturnType = [CommentType, UserType, ArticleType];
+
 class Comment extends baseComponent {
   /**
    * 新建评论
@@ -51,13 +53,13 @@ class Comment extends baseComponent {
           message: '参数错误',
         };
       } else {
-        const [articleComment, userInfo, articleDetail] = <
-          [CommentType, UserType, ArticleType]
-        >await Promise.all([
-          <any>CommentModel.findOne({ articleId: Number(articleId) }),
-          <any>UserModel.findOne({ id: Number(userId) }, filterField),
-          <any>ArticleModel.findOne({ id: Number(articleId) }),
-        ]);
+        const [articleComment, userInfo, articleDetail] = <PromiseReturnType>(
+          await Promise.all([
+            <any>CommentModel.findOne({ articleId: Number(articleId) }),
+            <any>UserModel.findOne({ id: Number(userId) }, filterField),
+            <any>ArticleModel.findOne({ id: Number(articleId) }),
+          ])
+        );
         if (!articleComment || !userInfo || !articleDetail) {
           ctx.body = {
             code: 1,
@@ -239,12 +241,9 @@ class Comment extends baseComponent {
           message: '参数错误',
         };
       } else {
-        const [
-          articleComment,
-          userInfo,
-          respUserInfo,
-          articleDetail,
-        ] = <[CommentType, UserType, UserType, ArticleType]>await Promise.all([
+        const [articleComment, userInfo, respUserInfo, articleDetail] = <
+          [CommentType, UserType, UserType, ArticleType]
+        >await Promise.all([
           <any>CommentModel.findOne({ articleId }),
           <any>UserModel.findOne({ id: userId }, filterField),
           <any>UserModel.findOne({ id: respUserId }, filterField),
@@ -273,7 +272,9 @@ class Comment extends baseComponent {
           articleComment.save(),
           articleDetail.save(),
         ]);
-        const selectComment = comments.comments.find((item) => item.id === commentId);
+        const selectComment = comments.comments.find(
+          (item) => item.id === commentId,
+        );
         ctx.body = {
           code: 0,
           data: selectComment!.subComments,

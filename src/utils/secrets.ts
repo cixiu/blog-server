@@ -5,6 +5,15 @@ import logger from './logger';
 if (process.env.NODE_ENV === 'test') {
   console.info('正在使用 .env.test 文件来配置环境变量');
   dotenv.config({ path: '.env.test' });
+} else if (process.env.NODE_ENV === 'production') {
+  if (!fs.existsSync('.env.prodution')) {
+    throw new Error(
+      '请添加 .env.production 配置文件，可参考 .env.example配置文件',
+    );
+  } else {
+    logger.info('正在使用 .env.production 文件来配置环境变量');
+    dotenv.config({ path: '.env.production' });
+  }
 } else {
   if (fs.existsSync('.env')) {
     logger.info('正在使用 .env 文件来配置环境变量');
@@ -20,11 +29,13 @@ if (process.env.NODE_ENV === 'test') {
 // 如果编译器不能够去除 null或 undefined，你可以使用类型断言手动去除。
 // 语法是添加 !后缀：identifier!从 identifier的类型里去除了 null和 undefined：
 export const ENVIRONMENT = process.env.NODE_ENV!;
-const prod = ENVIRONMENT === "production";
+const prod = ENVIRONMENT === 'production';
 
 export const PORT = process.env.PORT!;
 export const SESSION_SECRET = process.env.SESSION_SECRET!;
-export const MONGODB_URI = prod ? process.env.MONGODB_URI! : process.env.MONGODB_URI_LOCAL!;
+export const MONGODB_URI = prod
+  ? process.env.MONGODB_URI!
+  : process.env.MONGODB_URI_LOCAL!;
 export const COOKIE_KEY = process.env.COOKIE_KEY!;
 export const SUPER_SECRET = process.env.SUPER_SECRET!;
 

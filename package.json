@@ -12,7 +12,7 @@
   "license": "GPL-3.0",
   "scripts": {
     "start": "npm run serve",
-    "build": "npm run build-ts && npm run tslint && npm run copy-static-assets",
+    "build": "npm run build-ts && npm run tslint",
     "serve": "node dist/server.js",
     "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\"",
     "watch-node": "nodemon dist/server.js",
@@ -22,7 +22,7 @@
     "watch-test": "cross-env NODE_ENV=test npm run test -- --watchAll",
     "test": "jest --runInBand --forceExit --coverage --verbose",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
-    "connect-mongodb": "mongod --dbpath=./db --port 43996",
+    "connect-mongodb-local": "mongod --dbpath=./db --port 43996",
     "connect-mongodb-test": "mongod --dbpath=./db-test --port 43997",
     "commit": "git-cz",
     "changelog": "standard-version"
